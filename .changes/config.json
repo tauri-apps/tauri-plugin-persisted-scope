@@ -1,0 +1,16 @@
+{
+  "gitSiteUrl": "https://www.github.com/tauri-apps/tauri-plugin-persisted-scope/",
+  "pkgManagers": {
+    "rust": {
+      "version": true,
+      "publish": true,
+      "getPublishedVersion": "cargo search ${ pkg.pkg } --limit 1 | sed -nE 's/^[^\"]*\"//; s/\".*//1p' -"
+    }
+  },
+  "packages": {
+    "tauri-plugin-persisted-scope": {
+      "path": ".",
+      "manager": "rust"
+    }
+  }
+}
