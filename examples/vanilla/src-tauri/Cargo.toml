@@ -9,7 +9,7 @@ rust-version = "1.56"
 
 [dependencies]
 #tauri = { version = "1.0.0-rc.4", features = ["dialog-open", "fs-read-file"] }
-tauri = { git = "https://github.com/tauri-apps/tauri", branch = "feat/fs-scope-events", features = ["dialog-open", "fs-read-file"] }
+tauri = { git = "https://github.com/tauri-apps/tauri", features = ["dialog-open", "fs-read-file"] }
 tauri-plugin-persisted-scope = { path = "../../.." }
 
 [build-dependencies]
