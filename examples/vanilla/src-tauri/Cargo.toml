@@ -8,12 +8,11 @@ edition = "2021"
 rust-version = "1.56"
 
 [dependencies]
-#tauri = { version = "1.0.0-rc.4", features = ["dialog-open", "fs-read-file"] }
-tauri = { git = "https://github.com/tauri-apps/tauri", features = ["dialog-open", "fs-read-file"] }
+tauri = { version = "1.0.0-rc.10", features = ["dialog-open", "fs-read-file"] }
 tauri-plugin-persisted-scope = { path = "../../.." }
 
 [build-dependencies]
-tauri-build = "1.0.0-rc.3"
+tauri-build = "1.0.0-rc.8"
 
 [features]
 default = [ "custom-protocol" ]
