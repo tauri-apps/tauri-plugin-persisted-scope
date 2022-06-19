@@ -14,15 +14,9 @@ Please note, below in the dependencies you can also lock to a revision/tag in th
 
 `src-tauri/Cargo.toml`
 ```yaml
-[dependencies.tauri]
-git = "https://github.com/tauri-apps/tauri/"
-branch = "next"
-features = ["api-all"]
-
-[dependencies.tauri-plugin-persisted-scope]
-git = "https://github.com/tauri-apps/tauri-plugin-persisted-scope"
-tag = "tauri-plugin-persisted-scope-v0.1.0"
-#branch = "main"
+[dependencies]
+tauri = "1.0"
+tauri-plugin-persisted-scope = "0.1"
 ```
 
 Use in `src-tauri/src/main.rs`:

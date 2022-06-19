@@ -15,6 +15,18 @@ use std::{
 
 const SCOPE_STATE_FILENAME: &str = ".persisted-scope";
 
+#[derive(Debug, thiserror::Error)]
+enum Error {
+  #[error(transparent)]
+  Io(#[from] std::io::Error),
+  #[error(transparent)]
+  Tauri(#[from] tauri::Error),
+  #[error(transparent)]
+  TauriApi(#[from] tauri::api::Error),
+  #[error(transparent)]
+  Bincode(#[from] Box<bincode::ErrorKind>),
+}
+
 #[derive(Debug, Default, Deserialize, Serialize)]
 struct Scope {
   allowed_paths: Vec<String>,
@@ -39,6 +51,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
 
         if scope_state_path.exists() {
           let scope: Scope = tauri::api::file::read_binary(&scope_state_path)
+            .map_err(Error::from)
             .and_then(|scope| bincode::deserialize(&scope).map_err(Into::into))
             .unwrap_or_default();
           for allowed in scope.allowed_paths {
@@ -73,10 +86,10 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             let scope_state_path = scope_state_path.clone();
 
             let _ = create_dir_all(&app_dir)
-              .map_err(tauri::api::Error::Io)
-              .and_then(|_| File::create(scope_state_path).map_err(Into::into))
+              .and_then(|_| File::create(scope_state_path))
+              .map_err(Error::Io)
               .and_then(|mut f| {
-                f.write_all(&bincode::serialize(&scope).map_err(tauri::api::Error::Bincode)?)
+                f.write_all(&bincode::serialize(&scope).map_err(Error::from)?)
                   .map_err(Into::into)
               });
           }
