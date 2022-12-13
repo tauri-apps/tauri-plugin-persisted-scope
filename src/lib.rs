@@ -39,8 +39,9 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
       let fs_scope = app.fs_scope();
       #[cfg(feature = "protocol-asset")]
       let asset_protocol_scope = app.asset_protocol_scope();
+
       let app = app.clone();
-      let app_dir = app.path_resolver().app_dir();
+      let app_dir = app.path_resolver().app_config_dir();
 
       if let Some(app_dir) = app_dir {
         let scope_state_path = app_dir.join(SCOPE_STATE_FILENAME);
