@@ -55,17 +55,39 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             .map_err(Error::from)
             .and_then(|scope| bincode::deserialize(&scope).map_err(Into::into))
             .unwrap_or_default();
+
+          // allows the path as iss
           for allowed in scope.allowed_paths {
-            // allows the path as is
-            let _ = fs_scope.allow_file(&allowed);
-            #[cfg(feature = "protocol-asset")]
-            let _ = asset_protocol_scope.allow_file(allowed);
+            let is_folder = allowed.ends_with("*");
+            let is_recursive = allowed.ends_with("**");
+
+            if is_folder {
+              let path = allowed.replace("\\**", "");
+              let _ = fs_scope.allow_directory(&path, is_recursive);
+              #[cfg(feature = "protocol-asset")]
+              let _ = asset_protocol_scope.allow_directory(path, is_recursive);
+            } else {
+              let _ = fs_scope.allow_file(&allowed);
+              #[cfg(feature = "protocol-asset")]
+              let _ = asset_protocol_scope.allow_file(allowed);
+            }
           }
-          for forbidden in scope.forbidden_patterns {
-            // forbid the path as is
-            let _ = fs_scope.forbid_file(&forbidden);
-            #[cfg(feature = "protocol-asset")]
-            let _ = asset_protocol_scope.forbid_file(forbidden);
+
+          // forbid the path as is
+          for allowed in scope.forbidden_patterns {
+            let is_folder = allowed.ends_with("*");
+            let is_recursive = allowed.ends_with("**");
+
+            if is_folder {
+              let path = allowed.replace("\\**", "");
+              let _ = fs_scope.allow_directory(&path, is_recursive);
+              #[cfg(feature = "protocol-asset")]
+              let _ = asset_protocol_scope.forbid_directory(path, is_recursive);
+            } else {
+              let _ = fs_scope.allow_file(&allowed);
+              #[cfg(feature = "protocol-asset")]
+              let _ = asset_protocol_scope.forbid_file(allowed);
+            }
           }
         }
 
