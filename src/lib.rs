@@ -62,7 +62,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             let is_recursive = allowed.ends_with("**");
 
             if is_folder {
-              let path = allowed.replace(if is_recursive {"\\**"} else {"\\*"}, "");
+              let path = allowed.replace(if is_recursive { "\\**" } else { "\\*" }, "");
               let _ = fs_scope.allow_directory(&path, is_recursive);
               #[cfg(feature = "protocol-asset")]
               let _ = asset_protocol_scope.allow_directory(path, is_recursive);
@@ -79,7 +79,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             let is_recursive = allowed.ends_with("**");
 
             if is_folder {
-              let path = allowed.replace(if is_recursive {"\\**"} else {"\\*"}, "");
+              let path = allowed.replace(if is_recursive { "\\**" } else { "\\*" }, "");
               let _ = fs_scope.allow_directory(&path, is_recursive);
               #[cfg(feature = "protocol-asset")]
               let _ = asset_protocol_scope.forbid_directory(path, is_recursive);
