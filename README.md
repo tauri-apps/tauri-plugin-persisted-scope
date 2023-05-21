@@ -1,5 +1,7 @@
 ![plugin-persisted-scope](banner.png)
 
+[DEPRECATED] Please use the plugin from https://github.com/tauri-apps/plugins-workspace instead.
+
 Save filesystem and asset scopes and restore them when the app is reopened.
 
 ## Install
